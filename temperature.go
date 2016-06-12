@@ -47,7 +47,7 @@ func ToRGB(kelvin uint16) (r, b, g uint8) {
 	}
 
 	// Calculate green
-	if temperature < 66. {
+	if temperature < 65. {
 		// a + b x + c Log[x] /.
 		// {a -> -155.25485562709179`,
 		// b -> -0.44596950469579133`,
@@ -55,7 +55,7 @@ func ToRGB(kelvin uint16) (r, b, g uint8) {
 		// x -> (kelvin/100) - 2}
 		green := temperature - 2
 		g = floatToUint8(-155.25485562709179 - 0.44596950469579133*green + 104.49216199393888*math.Log(green))
-	} else {
+	} else if temperature > 65. {
 		// a + b x + c Log[x] /.
 		// {a -> 325.4494125711974`,
 		// b -> 0.07943456536662342`,
@@ -63,6 +63,9 @@ func ToRGB(kelvin uint16) (r, b, g uint8) {
 		// x -> (kelvin/100) - 50}
 		green := temperature - 50.
 		g = floatToUint8(325.4494125711974 + 0.07943456536662342*green - 28.0852963507957*math.Log(green))
+	} else {
+		// Hard fit at 6500k.
+		g = 255
 	}
 
 	// Calculate blue
