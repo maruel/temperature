@@ -31,21 +31,13 @@ import "math"
 
 // ToRGB returns an RGB representation of the temperature in Kelvin.
 func ToRGB(kelvin uint16) (r, g, b uint8) {
-	temperature := float64(kelvin) * 0.01
-	if kelvin <= 6500 {
-		r = 255
-	} else {
-		// a + b x + c Log[x] /.
-		// {a -> 351.97690566805693`,
-		// b -> 0.114206453784165`,
-		// c -> -40.25366309332127
-		//x -> (kelvin/100) - 55}
-		red := temperature - 55.
-		r = floatToUint8(351.97690566805693 + 0.114206453784165*red - 40.25366309332127*math.Log(red))
+	if kelvin == 6500 {
+		// Hard fit at 6500K.
+		return 255, 255, 255
 	}
-
-	// Calculate green
+	temperature := float64(kelvin) * 0.01
 	if kelvin < 6500 {
+		r = 255
 		// a + b x + c Log[x] /.
 		// {a -> -155.25485562709179`,
 		// b -> -0.44596950469579133`,
@@ -53,23 +45,6 @@ func ToRGB(kelvin uint16) (r, g, b uint8) {
 		// x -> (kelvin/100) - 2}
 		green := temperature - 2
 		g = floatToUint8(-155.25485562709179 - 0.44596950469579133*green + 104.49216199393888*math.Log(green))
-	} else if kelvin > 6500 {
-		// a + b x + c Log[x] /.
-		// {a -> 325.4494125711974`,
-		// b -> 0.07943456536662342`,
-		// c -> -28.0852963507957`,
-		// x -> (kelvin/100) - 50}
-		green := temperature - 50.
-		g = floatToUint8(325.4494125711974 + 0.07943456536662342*green - 28.0852963507957*math.Log(green))
-	} else {
-		// Hard fit at 6500k.
-		g = 255
-	}
-
-	// Calculate blue
-	if kelvin >= 6500 {
-		b = 255
-	} else {
 		if kelvin > 2000 {
 			// a + b x + c Log[x] /.
 			// {a -> -254.76935184120902`,
@@ -79,7 +54,23 @@ func ToRGB(kelvin uint16) (r, g, b uint8) {
 			blue := temperature - 10
 			b = floatToUint8(-254.76935184120902 + 0.8274096064007395*blue + 115.67994401066147*math.Log(blue))
 		}
+		return
 	}
+	b = 255
+	// a + b x + c Log[x] /.
+	// {a -> 351.97690566805693`,
+	// b -> 0.114206453784165`,
+	// c -> -40.25366309332127
+	//x -> (kelvin/100) - 55}
+	red := temperature - 55.
+	r = floatToUint8(351.97690566805693 + 0.114206453784165*red - 40.25366309332127*math.Log(red))
+	// a + b x + c Log[x] /.
+	// {a -> 325.4494125711974`,
+	// b -> 0.07943456536662342`,
+	// c -> -28.0852963507957`,
+	// x -> (kelvin/100) - 50}
+	green := temperature - 50.
+	g = floatToUint8(325.4494125711974 + 0.07943456536662342*green - 28.0852963507957*math.Log(green))
 	return
 }
 

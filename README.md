@@ -7,7 +7,10 @@ for a color temperature.
 
 - It is a modified reimplementation of
   [color-temperature.js](http://github.com/neilbartlett/color-temperature) by
-  Neil Bartlett ([blog](http://www.zombieprototypes.com/?p=210)) in Go
+  Neil Bartlett ([blog](http://www.zombieprototypes.com/?p=210)) in Go.
+  - It is optimized to reduce the number of conditions and do the conditions in
+    integers instead of on floats.
+  - Add the 6500 whitepoint, which was missing (!)
 - ... which itself is a modified reimplementation of [Tanner Helland's
   implementation in Visual
   Basic](http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/).
@@ -52,14 +55,14 @@ only arithmetic to [run on a ESP8266](https://github.com/maruel/dlibox-esp).
 
 Benchmark run on a Intel i7-5600U:
 
-    BenchmarkToRGBUsingTH1500-4     30000000                46.9 ns/op
-    BenchmarkToRGBUsingTH2500-4     20000000                61.8 ns/op
-    BenchmarkToRGBUsingTH6500-4     20000000                60.6 ns/op
-    BenchmarkToRGBUsingTH7000-4     10000000               201 ns/op
-    BenchmarkToRGB1500-4            30000000                48.2 ns/op
-    BenchmarkToRGB2500-4            20000000                62.8 ns/op
-    BenchmarkToRGB6500-4            30000000                48.7 ns/op
-    BenchmarkToRGB7000-4            20000000                62.5 ns/op
+    BenchmarkToRGBUsingTH1500-4     30000000                42.8 ns/op
+    BenchmarkToRGBUsingTH2500-4     30000000                56.8 ns/op
+    BenchmarkToRGBUsingTH6500-4     1000000000               2.35 ns/op
+    BenchmarkToRGBUsingTH7000-4     10000000               195 ns/op
+    BenchmarkToRGB1500-4            30000000                43.8 ns/op
+    BenchmarkToRGB2500-4            30000000                57.5 ns/op
+    BenchmarkToRGB6500-4            1000000000               2.34 ns/op
+    BenchmarkToRGB7000-4            30000000                57.8 ns/op
 
 
 ## License

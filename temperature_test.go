@@ -18,29 +18,22 @@ import (
 // accurate. It is kept here to implement the comparison benchmark with Neil
 // Bartlett's version.
 func toRGBUsingTH(kelvin uint16) (r, g, b uint8) {
+	if kelvin == 6500 {
+		return 255, 255, 255
+	}
 	temperature := float64(kelvin) * 0.01
-	if kelvin <= 6500 {
-		r = 255
-	} else {
-		red := temperature - 60.
-		r = floatToUint8(329.698727446 * math.Pow(red, -0.1332047592))
-	}
-
 	if kelvin < 6500 {
+		r = 255
 		g = floatToUint8(99.4708025861*math.Log(temperature) - 161.1195681661)
-	} else if kelvin > 6500 {
-		g = floatToUint8(288.1221695283 * math.Pow(temperature-60., -0.0755148492))
-	} else {
-		g = 255
-	}
-
-	if kelvin >= 6500 {
-		b = 255
-	} else {
 		if kelvin > 1900 {
 			b = floatToUint8(138.5177312231*math.Log(temperature-10) - 305.0447927307)
 		}
+		return
 	}
+	red := temperature - 60.
+	r = floatToUint8(329.698727446 * math.Pow(red, -0.1332047592))
+	g = floatToUint8(288.1221695283 * math.Pow(temperature-60., -0.0755148492))
+	b = 255
 	return
 }
 
