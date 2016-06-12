@@ -30,9 +30,9 @@ package temperature
 import "math"
 
 // ToRGB returns an RGB representation of the temperature in Kelvin.
-func ToRGB(kelvin uint16) (r, b, g uint8) {
-	temperature := float64(kelvin) / 100.
-	if temperature < 66. {
+func ToRGB(kelvin uint16) (r, g, b uint8) {
+	temperature := float64(kelvin) * 0.01
+	if kelvin <= 6500 {
 		r = 255
 	} else {
 		// a + b x + c Log[x] /.
@@ -45,7 +45,7 @@ func ToRGB(kelvin uint16) (r, b, g uint8) {
 	}
 
 	// Calculate green
-	if temperature < 65. {
+	if kelvin < 6500 {
 		// a + b x + c Log[x] /.
 		// {a -> -155.25485562709179`,
 		// b -> -0.44596950469579133`,
@@ -53,7 +53,7 @@ func ToRGB(kelvin uint16) (r, b, g uint8) {
 		// x -> (kelvin/100) - 2}
 		green := temperature - 2
 		g = floatToUint8(-155.25485562709179 - 0.44596950469579133*green + 104.49216199393888*math.Log(green))
-	} else if temperature > 65. {
+	} else if kelvin > 6500 {
 		// a + b x + c Log[x] /.
 		// {a -> 325.4494125711974`,
 		// b -> 0.07943456536662342`,
@@ -67,10 +67,10 @@ func ToRGB(kelvin uint16) (r, b, g uint8) {
 	}
 
 	// Calculate blue
-	if temperature >= 66. {
+	if kelvin >= 6500 {
 		b = 255
 	} else {
-		if temperature > 20. {
+		if kelvin > 2000 {
 			// a + b x + c Log[x] /.
 			// {a -> -254.76935184120902`,
 			// b -> 0.8274096064007395`,
@@ -85,12 +85,12 @@ func ToRGB(kelvin uint16) (r, b, g uint8) {
 
 // ToKelvin converts a RGB color into to the closest Kelvin color temperature.
 func ToKelvin(r, g, b uint8) uint16 {
-	var temperature float64
 	const epsilon = 0.4
+	temperature := 0.
 	minTemperature := 1000.
 	maxTemperature := 40000.
 	for maxTemperature-minTemperature > epsilon {
-		temperature = (maxTemperature + minTemperature) / 2.
+		temperature = (maxTemperature + minTemperature) * 0.5
 		tR, tB, _ := ToRGB(floatToUint16(temperature))
 		if float32(tB)/float32(tR) >= float32(b)/float32(r) {
 			maxTemperature = temperature
