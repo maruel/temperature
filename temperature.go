@@ -9,10 +9,7 @@
 //  Copyright [2015] [Neil Bartlett] *
 
 // package temperature implements an algorithm to calculate the channel
-// intensity for a color temperature.
-//
-// It is a reimplementation of http://github.com/neilbartlett/color-temperature
-// in Go. License is MIT.
+// intensity for a color temperature in Kelvin.
 //
 // Color Temperature is the color due to black body radiation at a given
 // temperature. The temperature is given in Kelvin. The concept is widely used
@@ -20,9 +17,10 @@
 //
 // The function here converts a given color temperature into a near equivalent
 // in the RGB colorspace. The function is based on a curve fit on standard
-// sparse set of Kelvin to RGB mappings.
+// sparse set of Kelvin to RGB mappings with a whitepoint (255, 255, 255) at
+// 6500K.
 //
-// NOTE The approximations used are suitable for photo-mainpulation and other
+// NOTE The approximations used are suitable for photo-manipulation and other
 // non-critical uses. They are not suitable for medical or other high accuracy
 // use cases.
 //

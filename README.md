@@ -6,20 +6,21 @@ for a color temperature.
 [![GoDoc](https://godoc.org/github.com/maruel/temperature?status.svg)](https://godoc.org/github.com/maruel/temperature)
 
 - It is a modified reimplementation of
-http://github.com/neilbartlett/color-temperature (JavaScript) by Neil Bartlett
-([blog](http://www.zombieprototypes.com/?p=210)) in Go
-- which itself is a modified reimplementation of [Tanner Helland's
+  [color-temperature.js](http://github.com/neilbartlett/color-temperature) by
+  Neil Bartlett ([blog](http://www.zombieprototypes.com/?p=210)) in Go
+- ... which itself is a modified reimplementation of [Tanner Helland's
   implementation in Visual
   Basic](http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/).
-- which itself is based on Mitchell Charity’s [raw black body color
+- ... which itself is based on Mitchell Charity’s [raw black body color
   table](http://www.vendian.org/mncharity/dir3/blackbody/UnstableURLs/bbr_color.html).
-- this table uses D65 while [sRGB specification uses
-  D50](https://en.wikipedia.org/wiki/SRGB#Viewing_environment).
-- Ironically, [Mitchell Charity now
+  - this table uses D65. [sRGB specification uses D65 but assumes D50 external
+    environment](https://en.wikipedia.org/wiki/SRGB#Viewing_environment).
+- 15 years later, [Mitchell Charity changed his mind and now
   recommends](http://www.vendian.org/mncharity/dir3/starcolor/) to use D58
-  instead of D65 and created [a new D58
-  table](http://www.vendian.org/mncharity/dir3/starcolor/UnstableURLs/starcolorsD58.html).
-- [Original blog post](http://www.vendian.org/mncharity/dir3/blackbody/).
+  instead of D65.
+  - He created [a new D58
+    table](http://www.vendian.org/mncharity/dir3/starcolor/UnstableURLs/starcolorsD58.html).
+  - [Original blog post](http://www.vendian.org/mncharity/dir3/blackbody/).
 
 
 ## Explanation
@@ -30,7 +31,7 @@ photography and in tools such as [f.lux](https://justgetflux.com).
 
 The function here converts a given color temperature into a near equivalent in
 the RGB colorspace. The function is based on a curve fit on standard sparse set
-of Kelvin to RGB mappings.
+of Kelvin to RGB mappings with a whitepoint (255, 255, 255) at 6500K.
 
 NOTE The approximations used are suitable for photo-manipulation and other
 non-critical uses. They are not suitable for medical or other high accuracy use
@@ -43,8 +44,8 @@ Accuracy is best between 1000K and 40000K.
 
 This project has been implemented specifically for the use case of APA-102 LEDs,
 [driven by a Raspberry Pi](https:/github.com/maruel/dlibox-go),
-which are very cold by default. Then be reimplemented in C++ with integer only
-arithmetic to [run on a ESP8266](https://github.com/maruel/dlibox-esp).
+which are very cold by default. Then he reimplemented it in C++ with integer
+only arithmetic to [run on a ESP8266](https://github.com/maruel/dlibox-esp).
 
 
 ## Performance
