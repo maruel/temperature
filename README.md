@@ -40,7 +40,7 @@ NOTE The approximations used are suitable for photo-manipulation and other
 non-critical uses. They are not suitable for medical or other high accuracy use
 cases.
 
-Accuracy is best between 1000K and 40000K.
+Accuracy is best between 1000K and 30000K.
 
 
 # History
