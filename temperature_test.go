@@ -43,28 +43,30 @@ func toRGBUsingTH(kelvin uint16) (r, b, g uint8) {
 }
 
 func ExampleToRGB() {
+	fmt.Printf("Kelvin RRGGBB\n")
 	for k := uint16(1000); k <= 9000; k += 500 {
 		r, g, b := ToRGB(k)
-		fmt.Printf("%d 0x%02X0x%02X0x%02X\n", k, r, g, b)
+		fmt.Printf("%-4d   %02X%02X%02X\n", k, r, g, b)
 	}
 	// Output:
-	// 1000 0xFF0x000x3B
-	// 1500 0xFF0x000x6C
-	// 2000 0xFF0x000x8C
-	// 2500 0xFF0x480xA3
-	// 3000 0xFF0x6D0xB5
-	// 3500 0xFF0x8B0xC4
-	// 4000 0xFF0xA50xD1
-	// 4500 0xFF0xBA0xDC
-	// 5000 0xFF0xCE0xE5
-	// 5500 0xFF0xE00xED
-	// 6000 0xFF0xF00xF4
-	// 6500 0xFF0xFF0xFF
-	// 7000 0xF60xFF0xF4
-	// 7500 0xEB0xFF0xEE
-	// 8000 0xE20xFF0xE9
-	// 8500 0xDB0xFF0xE5
-	// 9000 0xD60xFF0xE2
+	// Kelvin RRGGBB
+	// 1000   FF003B
+	// 1500   FF006C
+	// 2000   FF008C
+	// 2500   FF48A3
+	// 3000   FF6DB5
+	// 3500   FF8BC4
+	// 4000   FFA5D1
+	// 4500   FFBADC
+	// 5000   FFCEE5
+	// 5500   FFE0ED
+	// 6000   FFF0F4
+	// 6500   FFFFFF
+	// 7000   F6FFF4
+	// 7500   EBFFEE
+	// 8000   E2FFE9
+	// 8500   DBFFE5
+	// 9000   D6FFE2
 }
 
 func ExampleToKelvin() {
