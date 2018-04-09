@@ -259,13 +259,36 @@ func ExampleToRGBFast() {
 }
 
 func TestKelvin(t *testing.T) {
-	k := ToKelvin(0xFF, 0xFF, 0xFF)
-	// r, g, b :=
-	ToRGB(k)
-	// Output is random.
-	//fmt.Printf("%d %02X%02X%02X\n", k, r, g, b)
-	// // Output:
-	// // 7200 F1F1FF
+	// The quality is fairly low.
+	data := []struct {
+		r, g, b uint8
+		k       uint16
+	}{
+		{0xFF, 0x53, 0x00, 1001}, // 1000
+		{0xFF, 0x6C, 0x00, 1001}, // 1500
+		{0xFF, 0x93, 0x2C, 2199}, // 2000
+		{0xFF, 0xA1, 0x47, 2484}, // 2500
+		{0xFF, 0xBB, 0x78, 3160}, // 3000
+		{0xFF, 0xC4, 0x89, 3450}, // 3500
+		{0xFF, 0xD5, 0xAD, 4174}, // 4000
+		{0xFF, 0xDB, 0xBA, 4477}, // 4500
+		{0xFF, 0xE8, 0xD5, 5176}, // 5000
+		{0xFF, 0xEC, 0xDF, 5462}, // 5500
+		{0xFF, 0xF5, 0xF5, 6141}, // 6000
+		{0xFF, 0xF8, 0xFD, 6405}, // 6499
+		{0xFF, 0xFF, 0xFF, 6473}, // 6500
+		{0xFE, 0xF8, 0xFF, 6695}, // 6501
+		{0xF0, 0xF1, 0xFF, 7216}, // 7000
+		{0xEA, 0xED, 0xFF, 7509}, // 7500
+		{0xE0, 0xE7, 0xFF, 8120}, // 8000
+		{0xDB, 0xE4, 0xFF, 8499}, // 8500
+		{0xD3, 0xE0, 0xFF, 9237}, // 9000
+	}
+	for _, l := range data {
+		if k := ToKelvin(l.r, l.g, l.b); k != l.k {
+			t.Fatalf("ToKelvin(0x%02X, 0x%02X, 0x%02X) = %d, expected %d", l.r, l.g, l.b, k, l.k)
+		}
+	}
 }
 
 func BenchmarkToRGBUsingTH1500(b *testing.B) {

@@ -431,7 +431,7 @@ func ToKelvin(r, g, b uint8) uint16 {
 	maxTemperature := 40000.
 	for maxTemperature-minTemperature > epsilon {
 		temperature = (maxTemperature + minTemperature) * 0.5
-		tR, tB, _ := ToRGB(floatToUint16(temperature))
+		tR, _, tB := ToRGB(floatToUint16(temperature))
 		if float32(tB)/float32(tR) >= float32(b)/float32(r) {
 			maxTemperature = temperature
 		} else {
